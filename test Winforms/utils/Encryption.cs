@@ -52,8 +52,6 @@ namespace test_Winforms.utils
             fsWrite.Write(bytesWrite, 0, bytesWrite.Length);
 
             fsWrite.Close();
-
-            //Console.WriteLine(luaText);
         }
 
         private static void Dencryp(string dencodingFile, string endFile)
