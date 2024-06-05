@@ -23,7 +23,6 @@ namespace test_Winforms.utils
         private static bool debug = false;
         private static bool deviceConnect = false;
         private static bool mouseInGame = true;
-        //private static string fontPath = null;
 
         public static bool DebugMode
         {
@@ -98,10 +97,5 @@ namespace test_Winforms.utils
             get { return colorBackground; }
             set { colorBackground = value; }
         }
-        /*public static string FontPath
-        {
-            get { return fontPath; }
-            set { fontPath = value; }
-        }*/
     }
 }
