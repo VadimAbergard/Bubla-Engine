@@ -28,9 +28,6 @@ namespace test_Winforms
         public windowOption()
         {
             InitializeComponent();
-            /*Closed += (s, e) => {
-                Option.TitleGame = nameGame.Text;
-            };*/
         }
 
         public void WhenOpen()
@@ -72,7 +69,6 @@ namespace test_Winforms
             OpenFileDialog fileDialoge = new OpenFileDialog();
             fileDialoge.ShowDialog();
             if (fileDialoge.FileName == null || fileDialoge.FileName == "") return;
-            //if(File.Exists("assets\\icon.png")) File.Delete("assets\\icon.png");
             File.Copy(fileDialoge.FileName, "assets\\icon.png", true);
 
             imageIcon.Source = new BitmapImage(new Uri(fileDialoge.FileName));
@@ -84,7 +80,6 @@ namespace test_Winforms
             OpenFileDialog fileDialoge = new OpenFileDialog();
             fileDialoge.ShowDialog();
             if (fileDialoge.FileName == null || fileDialoge.FileName == "") return;
-            //if(File.Exists("assets\\mouse.png")) File.Delete("assets\\mouse.png");
             File.Copy(fileDialoge.FileName, "assets\\mouse.png", true);
 
             imageMouse.Source = new BitmapImage(new Uri(fileDialoge.FileName));
@@ -98,8 +93,6 @@ namespace test_Winforms
             if (fileDialoge.FileName == null || fileDialoge.FileName == "") return;
             if(File.Exists("assets\\font.ttf")) File.Delete("assets\\font.ttf");
             File.Copy(fileDialoge.FileName, "assets\\font.ttf");
-
-            //Option.FontPath = fileDialoge.SafeFileName;
         }
 
         public void selectColor(object sender, RoutedEventArgs e)
@@ -126,11 +119,6 @@ namespace test_Winforms
             fbd.ShowDialog();
 
             Option.OutPathOutFolder = fbd.SelectedPath;
-            /*OpenFileDialog fileDialoge = new OpenFileDialog();
-            fileDialoge.ShowDialog();
-            if (fileDialoge.FileName == null || fileDialoge.FileName == "") return;
-
-            Option.OutPathOutFolder = fileDialoge.FileName;*/
         }
 
         public void buttonSave(object sender, RoutedEventArgs e)
