@@ -18,7 +18,6 @@ namespace Bubla.utils
         // for script
         private string sourseScript;
         private int layer;
-        //private bool? globalScript;
 
         // for sound
         private bool? loop;
@@ -175,7 +174,6 @@ namespace Bubla.utils
             ui.NameTexture = nameTexture;
             ui.Position = Position;
             ui.SourseSound = SourseSound;
-            //Console.WriteLine("scritp sourse = " + fileScript);
             ui.SourseScript = SourseScript;
             ui.Size = Size;
             ui.Text = text;
