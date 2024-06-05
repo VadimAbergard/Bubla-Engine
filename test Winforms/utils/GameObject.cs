@@ -7,7 +7,6 @@ using System.Windows;
 
 namespace test_Winforms.utils
 {
-    // когда добовляется новый параметр к обьекту надо пройтись по метода save load clone select
     public class GameObject
     {
         private string name;
