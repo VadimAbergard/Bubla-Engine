@@ -39,7 +39,7 @@ namespace test_Winforms
         private windowOption windowOption;
 
         private int widthCanvas = 728;
-        private int heightCanvas = /*335*/485;
+        private int heightCanvas = 485;
 
         private Regex regex = new Regex("[^0-9.,-]+");
 
@@ -73,7 +73,6 @@ namespace test_Winforms
                 foreach(Scene scene in scenes)
                 {
                     listScenes.Items.Add(scene.Name);
-                    //Console.WriteLine(scene.Uis.Count);
                 }
                 listScenes.SelectedItem = scenes[0].Name;
 
@@ -81,12 +80,6 @@ namespace test_Winforms
             }
 
             nameScene.Text = scenes[0].Name;
-            /*brbCanvas.Width = Option.WidhtScreen;
-            brbCanvas.Height = Option.HeightScreen;
-            canvas.Width = Option.WidhtScreen;
-            canvas.Height = Option.HeightScreen;*/
-
-            //AddAllElementsOnScene();
 
             if (!File.Exists("assets\\ScriptButtonHandler.cs"))
             {
@@ -139,7 +132,6 @@ namespace test_Winforms
                         typeUI = TypeUI.SCRIPT;
                         break;
                 }
-                //List<string> uiForList = new List<string>();
                 if (!listNameUI.Any()) {
                     foreach (TextBlock uiName in listUI.Items)
                     {
@@ -403,15 +395,12 @@ namespace test_Winforms
 
 
             listShapesCollider.DropDownClosed += (s, e) => {
-                //Console.WriteLine(listShapesCollider.SelectionBoxItem);
                 findGameObject(textBlockSelectNow.Text).TypeCollider = (string)listShapesCollider.SelectionBoxItem;
             };
 
 
 
             nameScene.PreviewKeyUp += (s, e) => {
-                //ComboBoxItem comboBoxItem = (ComboBoxItem)listScenes.SelectedItem;
-                //Console.WriteLine(listScenes.Text);
                 if (nameScene.Text.Equals("") || e.Key.ToString().Equals("Right") || e.Key.ToString().Equals("Left") || e.Key.ToString().Equals("Up") || e.Key.ToString().Equals("Down")) return;
                 
                 listScenes.Items.Remove(listScenes.SelectedItem);
@@ -419,18 +408,7 @@ namespace test_Winforms
                 listScenes.SelectedItem = nameScene.Text;
                 GetScene().Name = nameScene.Text;
                 listScenes.Text = nameScene.Text;
-                /*foreach (Scene scene in scenes)
-                {
-                    Console.WriteLine(scene.Name);
-                }*/
             };
-
-            //listScenes.Items.Add("ossss");
-            //listScenes.SelectedItem = "ossss2";
-
-            //Timer.Run(() => { updateGameObjectsOnScene(); }, 1);
-
-            //updateGameObjectsOnScene();
 
             SetUIEditor(TypeUI.NONE);
 
@@ -468,27 +446,16 @@ namespace test_Winforms
                     float posY = (float)(heightCanvas - GetScene().GameObjects[i].Position.Y * zoomCamera - ((Image)child).Height + posCamera.Y) / zoomCamera;
                     float width = (float)(GetScene().GameObjects[i].Size.X * zoomCamera);
                     float height = (float)(GetScene().GameObjects[i].Size.Y * zoomCamera);
-                    //RotateTransform rotateTransform = new RotateTransform(GetScene().GameObjects[i].Rotate);
-                    //rotateTransform.CenterX = GetScene().GameObjects[i].Size.X * zoomCamera / 2;
-                    //rotateTransform.CenterY = GetScene().GameObjects[i].Size.Y * zoomCamera / 2;
-                    //((Image)child).RenderTransform = rotateTransform;
-                    //if (mousePosX > posX && mousePosX < posX + width &&
-                    //        posY < mousePosY && posY + height > mousePosY) Console.WriteLine("asd");
-                    //Console.WriteLine($"{mousePosX} > {posX} && {mousePosX} < {posX + width} && {posY} < {mousePosY} && {posY + height} > {mousePosY}");
-                    //Console.WriteLine($"{posX} {posY} {width} {height} | {mousePosX} {mousePosY}");
                     i++;
                     continue;
                 }
                 catch { }
             }
-                //if () Console.WriteLine("");
-
                 updateGameObjectsOnScene();
         }
 
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            //Console.WriteLine(e.Key);
             // camera move
             if (e.Key.ToString().Equals("LeftShift") || e.Key.ToString().Equals("RightShift")) shiftHold = true;
             if (e.Key.ToString().Equals("LeftCtrl") || e.Key.ToString().Equals("RightCtrl")) ctrlHold = true;
@@ -498,13 +465,10 @@ namespace test_Winforms
             else if (e.Key.ToString().Equals("Left")) posCamera.X -= speed;
             else if (e.Key.ToString().Equals("Up")) posCamera.Y -= speed;
             else if (e.Key.ToString().Equals("Down")) posCamera.Y += speed;
-            //Console.WriteLine(e.Key.ToString());
 
             updateGameObjectsOnScene();
         }
 
-        /*private int rightButtonMouseX;
-        private bool rightButtonMousePressed = false;*/
         private Vector lastPos = new Vector();
 
         private void HandleMouseMove(object sender, MouseEventArgs e)
@@ -517,48 +481,12 @@ namespace test_Winforms
                 float deltaX = (float)(mouse.X - lastPos.X);
                 float deltaY = (float)(mouse.Y - lastPos.Y);
                 
-                //Console.WriteLine(posCamera.ToString());
                 posCamera.X -= deltaX;
                 posCamera.Y -= deltaY;
                 
-                /*var container = VisualTreeHelper.GetParent(this) as UIElement;
-                var mousePosition = e.GetPosition(container);
-
-                if (!rightButtonMousePressed)
-                {
-                    rightButtonMouseX = (int)mousePosition.X;
-                }
-                rightButtonMousePressed = true;
-
-                if (rightButtonMouseX - mousePosition.X > 0) posCamera.X += 1;
-                Console.WriteLine(rightButtonMouseX - mousePosition.X);
-                Console.WriteLine(rightButtonMouseX);*/
-
                 updateGameObjectsOnScene();
             }
             lastPos = new Vector(mouse.X, mouse.Y);
-            /*if (e.RightButton.ToString().Equals("Pressed"))
-            {
-                var container = VisualTreeHelper.GetParent(this) as UIElement;
-                var mousePosition = e.GetPosition(container);
-                
-                if (!rightButtonMousePressed)
-                {
-                    rightButtonMouseX = (int)mousePosition.X;
-                }
-                rightButtonMousePressed = true;
-
-                if(rightButtonMouseX - mousePosition.X > 0) posCamera.X += 1;
-                Console.WriteLine(rightButtonMouseX - mousePosition.X);
-                Console.WriteLine(rightButtonMouseX);
-
-                updateGameObjectsOnScene();
-            }
-            else
-            {
-                rightButtonMouseX = 0;
-                rightButtonMousePressed = false;
-            }*/
         }
 
         private void HandleKeyRelised(object sender, KeyEventArgs e)
@@ -569,8 +497,6 @@ namespace test_Winforms
 
         private void HandleMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            //if (ctrlHold)
-            //{
                 float speedZoom = 0.07f;
                 if (e.Delta < 0) zoomCamera -= speedZoom;
                 else if (e.Delta > 0) zoomCamera += speedZoom;
@@ -579,14 +505,6 @@ namespace test_Winforms
 
                 updateGameObjectsOnScene();
                 return;
-            //}
-
-            /*float speedPos = 50;
-            if (shiftHold) posCamera.Y += e.Delta < 0 ? speedPos : speedPos * -1;
-            else posCamera.X += e.Delta < 0 ? speedPos : speedPos * -1;
-            //else if (e.Delta > 0) zoomCamera += speedPos;
-
-            if (zoomCamera < 0.1f) zoomCamera = 0.1f;*/
 
             updateGameObjectsOnScene();
         }
@@ -617,11 +535,9 @@ namespace test_Winforms
 
         private void UpdateScene()
         {
-            //canvas.cle
             canvas.Children.Clear();
             listObjects.Items.Clear();
             listUI.Items.Clear();
-            //AddImageCamera();
             foreach (GameObject gameObject in GetScene().GameObjects)
             {
                 TextBlock textBlock = new TextBlock();
@@ -668,35 +584,22 @@ namespace test_Winforms
             switch (sortListEditor.SelectionBoxItem)
             {
                 case "звук":
-                    //SetUIEditor(TypeUI.SOUND);
                     typeUI = TypeUI.SOUND;
                     break;
                 case "текст":
                     typeUI = TypeUI.TEXT;
-                    /*UI ui = new UI(nameUI.Text, TypeUI.TEXT);
-                    uis.Add(ui);*/
-                    //ui.TypeUI = TypeUI.TEXT;
                     addTextInScene(ui);
-                    //SetUIEditor(TypeUI.TEXT);
                     break;
                 case "кнопка":
                     typeUI = TypeUI.BUTTON;
-                    //ui.TypeUI = TypeUI.BUTTON;
                     addButtonInScene(ui);
-                    //SetUIEditor(TypeUI.BUTTON);
                     break;
                 case "картинка":
                     typeUI = TypeUI.IMAGE;
-                    //ui.TypeUI = TypeUI.IMAGE;
                     addImageInScene(ui);
-                    //SetUIEditor(TypeUI.IMAGE);
-                    //Console.WriteLine("new image");
                     break;
                 case "эффект":
                     typeUI = TypeUI.EFFECT;
-                    //ui.TypeUI = TypeUI.EFFECT;
-                    //addImageInScene(findUI(textBlockSelectNow.Text));
-                    //SetUIEditor(TypeUI.EFFECT);
 
                     BitmapImage bitmapImage = GetBitmapImageFromResourse("effect.png");
                     Image tem = new Image();
@@ -721,19 +624,6 @@ namespace test_Winforms
                     if (!File.Exists(ui.SourseScript))
                     {
                         FileStream fileScript = new FileStream(ui.SourseScript, FileMode.CreateNew);
-                        /*string text = "using Bubla;\r\n" +
-                            "using System;\r\n" +
-                            "" +
-                            $"\r\npublic class {ui.Name.Replace(" ", "_")}\r\n" +
-                            "{\r\n" +
-                            "    public static void Start() {\r\n" +
-                            "\n" +
-                            "    }\r\n\r" +
-                            "\n" +
-                            "    public static void Update(float delta) {\r\n\r\n" +
-                            "\n" +
-                            "    }\r\n" +
-                            "}";*/
 
                         string text =
                             "function Start()\r\n" +
@@ -746,23 +636,12 @@ namespace test_Winforms
                         if (typeProject.Equals(TypeProject.WEB)) text = "";
                         fileScript.Write(Encoding.UTF8.GetBytes(text), 0, text.Length);
                         fileScript.Close();
-                        //byte[] textByte = text;
-                        /*while((data = ) != -1)
-                        {
-
-                        }*/
-                        /*File.Copy("resourse\\scriptDefault.cs", ui.SourseScript);
-                        File.Open(ui.SourseScript, FileMode.Open);*/
                     }
                     else File.Open(ui.SourseScript, FileMode.Open).Close();
                     break;
             }
             ui.TypeUI = typeUI;
             SetUIEditor(typeUI);
-            /*foreach(UI ui2 in GetScene().Uis)
-            {
-                Console.WriteLine(ui2.TypeUI);
-            }*/
         }
 
         private void tb_KeyDownName_GameObject(object sender, KeyEventArgs e)
@@ -776,7 +655,6 @@ namespace test_Winforms
                     if (((Image)child).Uid.Equals(gameObject.Name))
                     {
                         ((Image)child).Uid = nameObject.Text;
-                        //Console.WriteLine(((Image)child).Uid);
                         break;
                     }
                 }
@@ -885,8 +763,6 @@ namespace test_Winforms
 
         private void CheckBoxGlobalScript(object sender, RoutedEventArgs e)
         {
-            //findUI(textBlockSelectNow.Text).GlobalScript = ((CheckBox)sender).IsChecked;
-
             updateGameObjectsOnScene();
         }
 
@@ -910,7 +786,6 @@ namespace test_Winforms
         private void CheckBoxCollider(object sender, RoutedEventArgs e) 
         {
             findGameObject(textBlockSelectNow.Text).Collider = ((CheckBox)sender).IsChecked;
-            //checkBoxPhysics.Visibility = ((CheckBox)sender).IsChecked.Value ? Visibility.Visible : Visibility.Hidden;
             checkBoxTrigger.Visibility = ((CheckBox)sender).IsChecked.Value ? Visibility.Visible : Visibility.Hidden;
             labelMass.Visibility = ((CheckBox)sender).IsChecked.Value ? Visibility.Visible : Visibility.Hidden;
             physicsMass.Visibility = ((CheckBox)sender).IsChecked.Value ? Visibility.Visible : Visibility.Hidden;
@@ -921,7 +796,6 @@ namespace test_Winforms
         private void CheckBoxSplitSprite(object sender, RoutedEventArgs e)
         {
             findGameObject(textBlockSelectNow.Text).SplitSprite = ((CheckBox)sender).IsChecked;
-            //checkBoxPhysics.Visibility = ((CheckBox)sender).IsChecked.Value ? Visibility.Visible : Visibility.Hidden;
             columnsLabel.Visibility = ((CheckBox)sender).IsChecked.Value ? Visibility.Visible : Visibility.Hidden;
             columns.Visibility = ((CheckBox)sender).IsChecked.Value ? Visibility.Visible : Visibility.Hidden;
             rows.Visibility = ((CheckBox)sender).IsChecked.Value ? Visibility.Visible : Visibility.Hidden;
@@ -949,15 +823,6 @@ namespace test_Winforms
         {
             findUI(textBlockSelectNow.Text).Sound3D = ((CheckBox)sender).IsChecked;
         }
-
-        /*private void CheckBoxPhysics(object sender, RoutedEventArgs e)
-        {
-            //findGameObject(textBlockSelectNow.Text).Physics = ((CheckBox)sender).IsChecked;
-            labelMass.Visibility = ((CheckBox)sender).IsChecked.Value ? Visibility.Visible : Visibility.Hidden;
-            physicsMass.Visibility = ((CheckBox)sender).IsChecked.Value ? Visibility.Visible : Visibility.Hidden;
-
-            updateGameObjectsOnScene();
-        }*/
 
         private void CheckBoxResourse(object sender, RoutedEventArgs e)
         {
@@ -993,10 +858,6 @@ namespace test_Winforms
             canvas.Children.Add(tem);
             Canvas.SetBottom(tem, 335 - gameObject.Position.Y - tem.Height);
             Canvas.SetRight(tem, 728 - gameObject.Position.X - tem.Width);
-            /*tem.MouseEnter += (s, e) => {
-                Console.WriteLine("asdkjhgsdfa");
-                Console.WriteLine(tem.Uid);
-            };*/
         }
 
         private void addButtonInScene(UI ui)
@@ -1041,7 +902,6 @@ namespace test_Winforms
             label.Content = ui.Text;
             label.FontSize = ui.Size.X == 0 ? 20 : ui.Size.X;
             label.Margin = new Thickness(0, 0, 0, 0);
-            //label.FontFamily = new FontFamily(GetBitmapImageFromAssets("font.ttf").ToString());
             label.Uid = ui.Name;
 
             canvas.Children.Add(label);
@@ -1108,8 +968,6 @@ namespace test_Winforms
 
             listUI.Items.Add(textBlock);
             GetScene().Uis.Add(new UI(textBlock.Text, TypeUI.SOUND));
-            //listNameUI.Add(textBlock.Text);
-            //исправить баг с удалением обьекта при сортировке
         }
 
         private void buttonResetZoomCamera(object sender, RoutedEventArgs e)
@@ -1121,27 +979,9 @@ namespace test_Winforms
 
         private void buttonUpdateLayer(object sender, RoutedEventArgs e)
         {
-            /*List<UIElement> uiDelete = new List<UIElement>();
-            foreach (UIElement child in canvas.Children)
-            {
-                if (child.Uid.Equals("sceneCamView") || child.Uid.Equals("frameTexture")) continue;
-                foreach (GameObject gameObject in GetScene().GameObjects)
-                {
-                    if (gameObject.Name.Equals(child.Uid)) {
-                        uiDelete.Add(child);
-                        //canvas.Children.Remove(child);
-                        break;
-                    }
-                }
-            }
-            foreach (UIElement uIElement in uiDelete)
-            {
-                canvas.Children.Remove(uIElement);
-            }*/
-                canvas.Children.Clear();
+            canvas.Children.Clear();
 
-                // add all gameObjects
-                List<GameObject> listObjects = new List<GameObject>();
+            List<GameObject> listObjects = new List<GameObject>();
             int layer = 0;
             while (true)
             {
@@ -1149,7 +989,6 @@ namespace test_Winforms
                 {
                     if (gameObject.Layer == layer)
                     {
-                        //Console.WriteLine($"load gameObject name = {gameObject.Name}");
                         BitmapImage bitmapImage = GetBitmapImageFromAssets(gameObject.NameTexture);
                         Image tem = new Image();
                         tem.Stretch = Stretch.Fill;
@@ -1180,11 +1019,6 @@ namespace test_Winforms
             updateGameObjectsOnScene();
         }
 
-        /*private void buttonColorTrigger(object sender, RoutedEventArgs e)
-        {
-            asd
-        }*/
-
         private void clickEvent_GameObject(object sender, MouseEventArgs e)
         {
             TextBlock textBlock = (TextBlock)sender;
@@ -1204,7 +1038,6 @@ namespace test_Winforms
             checkBoxTrigger.IsChecked = gameObjectNow.Trigger;
             rowsLabel.Content = checkBoxSplitSpritePixels.IsChecked.Value ? "width" : "rows";
             columnsLabel.Content = checkBoxSplitSpritePixels.IsChecked.Value ? "height" : "columns";
-            //Console.WriteLine("asd");
             columnsLabel.Visibility = checkBoxSplitSprite.IsChecked.Value ? Visibility.Visible : Visibility.Hidden;
             columns.Visibility = checkBoxSplitSprite.IsChecked.Value ? Visibility.Visible : Visibility.Hidden;
             rows.Visibility = checkBoxSplitSprite.IsChecked.Value ? Visibility.Visible : Visibility.Hidden;
@@ -1216,8 +1049,6 @@ namespace test_Winforms
             rowPos.Visibility = checkBoxSplitSprite.IsChecked.Value ? Visibility.Visible : Visibility.Hidden;
             rowPosLabel.Visibility = checkBoxSplitSprite.IsChecked.Value ? Visibility.Visible : Visibility.Hidden;
             checkBoxSplitSpritePixels.Visibility = checkBoxSplitSprite.IsChecked.Value ? Visibility.Visible : Visibility.Hidden;
-            //checkBoxPhysics.IsChecked = gameObjectNow.Physics;
-            //checkBoxPhysics.Visibility = checkBoxCollider.IsChecked.Value ? Visibility.Visible : Visibility.Hidden;
 
             checkBoxTrigger.Visibility = !checkBoxCollider.IsChecked.Value ? Visibility.Visible : Visibility.Hidden;
             labelMass.Visibility = checkBoxCollider.IsChecked.Value ? Visibility.Visible : Visibility.Hidden;
@@ -1274,7 +1105,6 @@ namespace test_Winforms
             textUI.Text = uiNow.Text;
             countUI.Text = uiNow.CountParticle.ToString().Replace(",", ".");
             rgbRInside.Text = "" + uiNow.GetRgbInside().R;
-            //Console.WriteLine(uiNow.GetRgbInside().R);
             rgbGInside.Text = "" + uiNow.GetRgbInside().G;
             rgbBInside.Text = "" + uiNow.GetRgbInside().B;
             rgbROutside.Text = "" + uiNow.GetRgbOutside().R;
@@ -1334,11 +1164,6 @@ namespace test_Winforms
                 posCamera.Y = uiNow.Position.Y * zoomCamera - heightCanvas / 2 + uiNow.Size.Y / 2;
             }
 
-            //cb_inEdit(null, null);
-            /*if (uiNow.NameTexture != null && uiNow.NameTexture != "")
-                imageObject.Source = GetBitmapImageFromAssets(uiNow.NameTexture);
-            else imageObject.Source = null;*/
-
             updateGameObjectsOnScene();
         }
 
@@ -1355,7 +1180,6 @@ namespace test_Winforms
 
             foreach (UIElement child in canvas.Children)
             {
-                //Console.WriteLine(((Image)child).Source);
                 try
                 {
                     if (((Image)child).Uid.Equals(gameObject.Name))
@@ -1411,22 +1235,6 @@ namespace test_Winforms
             textBlockSelectNow = null;
 
             SetVisibleEditor(Visibility.Hidden, VisibilityEditor.Object);
-            /*MessageBox.Show(
-                "Выберите один из вариантов",
-                "Сообщение",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Information,
-                MessageBoxResult.Yes,
-                MessageBoxOptions.DefaultDesktopOnly);*/
-
-            /*OpenFileDialog fileDialoge = new OpenFileDialog();
-            fileDialoge.ShowDialog();
-            if (fileDialoge.FileName == null || fileDialoge.FileName == "") return;
-            if(!File.Exists("assets\\" + fileDialoge.SafeFileName)) File.Copy(fileDialoge.FileName, "assets\\" + fileDialoge.SafeFileName);
-
-            findGameObject(textBlockSelectNow.Text).NameTexture 
-                = fileDialoge.SafeFileName;
-            imageObject.Source = new BitmapImage(new Uri(fileDialoge.FileName));*/
         }
 
         private void ButtonDeleteUI(object sender, RoutedEventArgs e)
@@ -1449,18 +1257,6 @@ namespace test_Winforms
             // delete from assets
             if (ui.SourseSound != "") File.Delete(ui.SourseSound);
             else if (ui.SourseScript != "") File.Delete(ui.SourseScript);
-            /*else
-            {
-                Console.WriteLine($"ui.NameTexture = {ui.NameTexture}");
-                bool otherUIUseImage = false;
-                foreach (UI _ui in GetScene().Uis)
-                {
-                    if (_ui.Name.Equals(ui.Name)) continue;
-                    if (_ui.NameTexture.Equals(ui.NameTexture)) otherUIUseImage = true;
-                }
-                Console.WriteLine(otherUIUseImage);
-                if (!otherUIUseImage) File.Delete($"assets\\{ui.NameTexture}");
-            }*/
 
             GetScene().Uis.Remove(ui);
             listUI.Items.Remove(textBlockSelectNow);
@@ -1480,10 +1276,7 @@ namespace test_Winforms
 
             string nameGame = Option.TitleGame.Replace(' ', '_');
             string pathLaba1 = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + nameGame;
-            //Console.WriteLine(pathLaba1);
             if (Directory.Exists(pathLaba1)) Directory.Delete(pathLaba1, true); // delete file save.bubla
-            //loadAllFile();
-            //updateGameObjectsOnScene();
         }
 
         private const int step = 100;
@@ -1542,20 +1335,6 @@ namespace test_Winforms
             System.Diagnostics.Process.Start(findUI(textBlockSelectNow.Text).SourseScript);
         }
 
-        /*private void playSound(object sender, RoutedEventArgs e)
-        {
-            //findUI(textBlockSelectNow.Text).SourseSound;
-        }*/
-
-
-        /*private void buttonOpenScript(object sender, RoutedEventArgs e)
-        {
-            if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "assets\\" + nameUI + ".cs"))
-                File.Copy(AppDomain.CurrentDomain.BaseDirectory + "resourse\\scriptDefault.txt",
-                    AppDomain.CurrentDomain.BaseDirectory + "assets\\" + nameUI + ".txt");
-            System.Diagnostics.Process.Start(AppDomain.CurrentDomain.BaseDirectory + "assets\\" + nameUI + ".cs");
-        }*/
-
         private void buttonAddScene(object sender, RoutedEventArgs e)
         {
             Scene scene = new Scene("scene" + scenes.Count);
@@ -1566,25 +1345,11 @@ namespace test_Winforms
 
         private void buttonPlayGame(object sender, RoutedEventArgs e)
         {
-            //loadAllFile();
-
-            //saveXmlInfoGame();
-            //saveXmlInfoGameEngine();
-
-            //Thread.Sleep(3);
-
-            //Console.OutputEncoding = Encoding.UTF8;
-
             Process myProcess = new Process();
             myProcess.StartInfo.FileName = "cmd.exe";
             myProcess.StartInfo.Arguments = @"/C cd " + Option.PathStartFile.Replace("\\FrameworkEngine.exe", "") + " & FrameworkEngine.exe";
-            //myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            //myProcess.StartInfo.CreateNoWindow = true;
             myProcess.Start();
             myProcess.WaitForExit();
-
-            /*System.Diagnostics.Process.Start(Option.PathStartFile);
-            */
 
             updateGameObjectsOnScene();
         }
@@ -1593,10 +1358,8 @@ namespace test_Winforms
         {
             foreach (GameObject gameObject in GetScene().GameObjects)
             {
-                
                 if (gameObject.Name.Equals(name))
                 {
-                    //Console.WriteLine(gameObject.Name + " == " + name);
                     return gameObject;
                 }
             }
@@ -1634,13 +1397,11 @@ namespace test_Winforms
 
             
             foreach (Scene scene in scenes) {
-                //string luaText = "";
                 List<UI> luaScripts = new List<UI>();
 
                 XElement xScene = new XElement("scene");
                 XAttribute nameScene = new XAttribute("name", scene.Name);
                 xScene.Add(nameScene);
-                //Console.WriteLine(scene.Name);
 
                 foreach (GameObject gameObject in scene.GameObjects)
                 {
@@ -1659,7 +1420,6 @@ namespace test_Winforms
                     try
                     {
                         gameObjectPathTexture = new XElement("nameTexture", RemoveEndNameFile(gameObject.NameTexture));
-                        //gameObjectPathTextureEncript = new XElement("nameTextureEncript", StringToByteToString(gameObject.NameTexture) + ".bubla");
                     }
                     catch (NullReferenceException e) { Console.WriteLine($"вы не указали текстуру для обьекта {gameObject.Name}"); }
                     XElement gameObjectPoint = new XElement("point", gameObject.Point);
@@ -1743,7 +1503,6 @@ namespace test_Winforms
                         gameObjectElement.Add(sound3D);
                         gameObjectElement.Add(volume);
                         gameObjectElement.Add(path);
-                        //gameObjectElement.Add(pathEncript);
 
                         xScene.Add(gameObjectElement);
                     }
@@ -1761,7 +1520,6 @@ namespace test_Winforms
 
                         gameObjectElement.Add(name);
                         gameObjectElement.Add(gameObjectPositionPathTexture);
-                        //gameObjectElement.Add(gameObjectPositionPathTextureEncript);
                         gameObjectElement.Add(gameObjectPositionPosX);
                         gameObjectElement.Add(gameObjectPositionPosY);
                         gameObjectElement.Add(gameObjectPositionSizeX);
@@ -1801,7 +1559,6 @@ namespace test_Winforms
 
                         gameObjectElement.Add(name);
                         gameObjectElement.Add(gameObjectPositionPathTexture);
-                        //gameObjectElement.Add(gameObjectPositionPathTextureEncript);
                         gameObjectElement.Add(gameObjectPositionPosX);
                         gameObjectElement.Add(gameObjectPositionPosY);
                         gameObjectElement.Add(gameObjectPositionSizeX);
@@ -1824,7 +1581,6 @@ namespace test_Winforms
 
                         gameObjectElement.Add(name);
                         gameObjectElement.Add(gameObjectPathTexture);
-                        //gameObjectElement.Add(gameObjectPathTextureEncript);
                         gameObjectElement.Add(gameObjectPosX);
                         gameObjectElement.Add(gameObjectPosY);
                         gameObjectElement.Add(gameObjectSizeX);
@@ -1838,8 +1594,6 @@ namespace test_Winforms
                         XElement gameObjectElement = new XElement("bossbar");
                         XAttribute name = new XAttribute("name", ui.Name);
 
-                        //XElement gameObjectPathTexture = new XElement("nameTexture", ui.NameTexture);
-                        //XElement gameObjectPathTexture = new XElement("nameTextureEncript", StringToByteToString(ui.NameTexture));
                         XElement gameObjectPosX = new XElement("x", ui.Position.X);
                         XElement gameObjectPosY = new XElement("y", ui.Position.Y);
                         XElement gameObjectSizeX = new XElement("sizeX", ui.Size.X);
@@ -1852,7 +1606,6 @@ namespace test_Winforms
                         XElement rgbBOutside = new XElement("rgbBOutside", ui.GetRgbOutside().B);
 
                         gameObjectElement.Add(name);
-                        //gameObjectElement.Add(gameObjectPathTexture);
                         gameObjectElement.Add(gameObjectPosX);
                         gameObjectElement.Add(gameObjectPosY);
                         gameObjectElement.Add(gameObjectSizeX);
@@ -1868,7 +1621,6 @@ namespace test_Winforms
                     }
                     else if (ui.TypeUI.Equals(TypeUI.SCRIPT))
                     {
-                        //if (($"assets\\{ui.Name}.lua").Equals("assets\\main.lua")) ; 
                         luaScripts.Add(ui);
                     }
                 }
@@ -1880,25 +1632,20 @@ namespace test_Winforms
                 {
                     foreach (UI script in luaScripts)
                     {
-                        //Console.WriteLine($"{script.Name} {script.Layer} = {layerScript}");
                         if (script.Layer == layerScript)
                         {
                             luaText += ReadFile($"assets\\{script.Name}.lua") + "\n";
-                            //Console.WriteLine(luaText);
                         }
                     }
                     if (layerScript == maxLayerScript) break;
                     layerScript++;
                 }
-                //Console.WriteLine($"загрузка скриптов прекратилась на слое: { layerScript}");
 
                 Encryption.EncodTextAndExport(luaText, Option.OutPathOutFolder + "\\mainScript" + nameScene.Value + ".bubla");
                 gameObjectsElement.Add(xScene);
             }
             xdoc.Add(gameObjectsElement);
             xdoc.Save("assets\\infoGame.xml");
-            //xdoc.Save("assets\\infoGame.bubla");
-            //if(Option.OutPathOutFolder != null) xdoc.Save(Option.OutPathOutFolder + "\\infoGame.xml");
         }
 
         public static void saveXmlInfoGameEngine()
@@ -2031,14 +1778,12 @@ namespace test_Winforms
                     else if (xnode.Name.Equals("scene"))
                     {
                         XmlNode attrScene = xnode.Attributes.GetNamedItem("name");
-                        //Console.WriteLine(attrScene.Value);
 
                         foreach (XmlNode childnodeScene in xnode.ChildNodes)
                         {
                             
                             if (childnodeScene.Name.Equals("ui"))
                             {
-                                //Console.WriteLine("asdasdasd");
                                 XmlNode attr = childnodeScene.Attributes.GetNamedItem("name"); 
 
                                 foreach (XmlNode childnode in childnodeScene.ChildNodes)
@@ -2122,13 +1867,6 @@ namespace test_Winforms
                                     {
                                         countParticle = int.Parse(childnode.InnerText);
                                     }
-                                    //
-                                    /*XElement rgbRInside = new XElement("rgbRInside", ui.GetRgbInside().R);
-                                    XElement rgbGInside = new XElement("rgbGInside", ui.GetRgbInside().G);
-                                    XElement rgbBInside = new XElement("rgbBInside", ui.GetRgbInside().B);
-                                    XElement rgbROutside = new XElement("rgbROutside", ui.GetRgbOutside().R);
-                                    XElement rgbGOutside = new XElement("rgbGOutside", ui.GetRgbOutside().G);
-                                    XElement rgbBOutside = new XElement("rgbBOutside", ui.GetRgbOutside().B);*/
                                     else if (childnode.Name.Equals("rgbRInside"))
                                     {
                                         rgbInside.R = byte.Parse(childnode.InnerText);
@@ -2168,7 +1906,6 @@ namespace test_Winforms
                                 ui.NameTexture = nameTexture;
                                 ui.Position = new Vector(x, y);
                                 ui.SourseSound = fileSound;
-                                //Console.WriteLine("scritp sourse = " + fileScript);
                                 ui.SourseScript = fileScript;
                                 ui.Size = new Vector(sizeX, sizeY);
                                 ui.Text = text;
@@ -2182,7 +1919,6 @@ namespace test_Winforms
                                 ui.SetRgbInside(rgbInside);
 
                                 GetScene(attrScene.Value).Uis.Add(ui);
-                                //Console.WriteLine($"in scene {GetScene(attrScene.Value).Name} ui: {GetScene(attrScene.Value).Uis.Count}");
                             }
                         }
                     }
@@ -2249,12 +1985,9 @@ namespace test_Winforms
                     {
                         XmlNode attrScene = xnode.Attributes.GetNamedItem("name");
                         Scene scene = new Scene(attrScene.Value);
-                        //Console.WriteLine("new scene");
-                        //int indexScene = 0;
 
                         foreach (XmlNode childnodeScene in xnode.ChildNodes)
                         {
-                            //Console.WriteLine(childnodeScene.Name);
                             if (childnodeScene.Name.Equals("gameObject"))
                             {
                                 XmlNode attrName = childnodeScene.Attributes.GetNamedItem("name");
@@ -2391,7 +2124,6 @@ namespace test_Winforms
                                 gameObject.Repited = repited;
 
                                 gameObject.Collider = collider;
-                                //gameObject.Physics = physics;
                                 gameObject.Trigger = trigger;
                                 gameObject.FixedRotation = fixedRotation;
                                 gameObject.FixedRotationTexture = fixedRotationTexture;
@@ -2422,7 +2154,6 @@ namespace test_Winforms
         {
             BitmapImage texture = null;
 
-            //int point = 0;
             int i = 0;
             int k = 0;
             int l = 0;
@@ -2430,14 +2161,8 @@ namespace test_Winforms
             int o = 0;
             foreach (UIElement child in canvas.Children)
             {
-                /*if(child is Label)
-                {
-                    Canvas.SetBottom((Image)child, 335 - gameObjects[i].Position.Y - ((Image)child).Height);
-                    Canvas.SetRight((Image)child, 728 - gameObjects[i].Position.X - ((Image)child).Width);
-                }*/
                 try
                 {
-                    //if (i == gameObjects.Count) { point = i; break; }
                     if (GetScene().GameObjects[i].NameTexture == null) texture = GetBitmapImageFromResourse("noneTexture.png");
                     else if (GetScene().GameObjects[i].Point.Value) texture = GetBitmapImageFromResourse("point.png");
                     else if (GetScene().GameObjects[i].Resourse.Value) texture = GetBitmapImageFromResourse("noneTexture2.png");
@@ -2456,7 +2181,7 @@ namespace test_Winforms
                     Canvas.SetRight((Image)child, widthCanvas - GetScene().GameObjects[i].Position.X * zoomCamera - ((Image)child).Width + posCamera.X);
                     i++;
                     continue;
-                } catch/*(ArgumentOutOfRangeException e)*/ { }
+                } catch { }
 
                 try
                 {
@@ -2466,13 +2191,10 @@ namespace test_Winforms
                     }
 
                     if (GetScene().Uis[k].TypeUI.Equals(TypeUI.BUTTON) && !(child is Label)) {
-                        /*if (uis[k].NameTexture == "") texture = GetBitmapImageFromResourse("noneTexture.png");
-                        else texture = GetBitmapImageFromAssets(uis[k].NameTexture);*/
                         texture = GetBitmapImageFromAssets(GetScene().Uis[k].NameTexture);
                         ((Image)child).Source = texture;
                         ((Image)child).Width = GetScene().Uis[k].Size.X * zoomCamera;
                         ((Image)child).Height = GetScene().Uis[k].Size.Y * zoomCamera;
-                        //Console.WriteLine("test 2 " + ((Image)child).Width);
                         Canvas.SetBottom((Image)child, heightCanvas - GetScene().Uis[k].Position.Y * zoomCamera - ((Image)child).Height + posCamera.Y);
                         Canvas.SetRight((Image)child, widthCanvas - GetScene().Uis[k].Position.X * zoomCamera - ((Image)child).Width + posCamera.X);
                         k++;
@@ -2510,28 +2232,18 @@ namespace test_Winforms
                 {
                     while (!GetScene().Uis[j].TypeUI.Equals(TypeUI.IMAGE))
                     {
-                        //Console.WriteLine(j);
                         j++;
                     }
 
-                    /*Console.WriteLine(uis[j].TypeUI.Equals(TypeUI.IMAGE) + " " + j + " x: " + uis[j].Size.X + " name: " + uis[j].Name +
-                        " is image: " + (child is Image));*/
-
                     if (GetScene().Uis[j].TypeUI.Equals(TypeUI.IMAGE))
                     {
-                        //Console.WriteLine("detext");
-                        /*if (uis[j].NameTexture == "") texture = GetBitmapImageFromResourse("noneTexture.png");
-                        else texture = GetBitmapImageFromAssets(uis[j].NameTexture);*/
                         texture = GetBitmapImageFromAssets(GetScene().Uis[j].NameTexture);
                         ((Image)child).Source = texture;
                         ((Image)child).Width = GetScene().Uis[j].Size.X * zoomCamera;
                         ((Image)child).Height = GetScene().Uis[j].Size.Y * zoomCamera;
-                        //Console.WriteLine(((Image)child).Width + " uid: " + ((Image)child).Uid);
-                        //Console.WriteLine("test 2 " + ((Image)child).Width);
                         Canvas.SetBottom((Image)child, heightCanvas - GetScene().Uis[j].Position.Y * zoomCamera - ((Image)child).Height + posCamera.Y);
                         Canvas.SetRight((Image)child, widthCanvas - GetScene().Uis[j].Position.X * zoomCamera - ((Image)child).Width + posCamera.X);
                         j++;
-                        //Console.WriteLine(j);
                     }
                 }
                 catch (ArgumentOutOfRangeException e) { }
@@ -2541,36 +2253,23 @@ namespace test_Winforms
                 {
                     while (!GetScene().Uis[o].TypeUI.Equals(TypeUI.EFFECT))
                     {
-                        //Console.WriteLine(j);
                         o++;
                     }
 
-                    /*Console.WriteLine(uis[j].TypeUI.Equals(TypeUI.IMAGE) + " " + j + " x: " + uis[j].Size.X + " name: " + uis[j].Name +
-                        " is image: " + (child is Image));*/
-
                     if (GetScene().Uis[o].TypeUI.Equals(TypeUI.EFFECT))
                     {
-                        //Console.WriteLine("detext");
-                        /*if (uis[j].NameTexture == "") texture = GetBitmapImageFromResourse("noneTexture.png");
-                        else texture = GetBitmapImageFromAssets(uis[j].NameTexture);*/
                         texture = GetBitmapImageFromResourse("effect.png");
                         ((Image)child).Source = texture;
                         ((Image)child).Width = sizeEffectTexture * zoomCamera;
                         ((Image)child).Height = sizeEffectTexture * zoomCamera;
-                        //Console.WriteLine(((Image)child).Width + " uid: " + ((Image)child).Uid);
-                        //Console.WriteLine("test 2 " + ((Image)child).Width);
                         Canvas.SetBottom((Image)child, heightCanvas - GetScene().Uis[o].Position.Y * zoomCamera - ((Image)child).Height + posCamera.Y);
                         Canvas.SetRight((Image)child, widthCanvas - GetScene().Uis[o].Position.X * zoomCamera - ((Image)child).Width + posCamera.X);
                         j++;
                     }
                 }
                 catch (ArgumentOutOfRangeException e) { }
-                //if (!(child is Image)) continue;
-                //Console.WriteLine(child.Uid);
                 if(child.Uid.Equals("sceneCamView"))
                 {
-                    //Console.WriteLine(((Image)child).Uid);
-                    //Console.WriteLine("asddasdaadsasd12331213 2");
                     ((Image)child).Width = widthCanvas * zoomCamera;
                     ((Image)child).Height = heightCanvas * zoomCamera;
                     Canvas.SetBottom((Image)child, heightCanvas - ((Image)child).Height + posCamera.Y);
@@ -2578,8 +2277,6 @@ namespace test_Winforms
                 }
                 if(child.Uid.Equals("frameTexture"))
                 {
-                    //Console.WriteLine(((Image)child).Width);
-                    //Console.WriteLine("asddasdaadsasd12331213");
                     try
                     {
                         GameObject gameObject = findGameObject(textBlockSelectNow.Text);
@@ -2599,41 +2296,7 @@ namespace test_Winforms
                     }
                     catch { }
                 }
-
-                /*if (k == uis.Count) { break; }
-                if (!uis[k].TypeUI.Equals(TypeUI.BUTTON))
-                {
-                    Console.WriteLine("test 0 " + uis[k].Name);
-                    k++;
-                    continue;
-                }
-                Console.WriteLine("test 1 " + uis[k].Name);
-                */
             }
-
-            /*int k = 0;
-            foreach (UIElement child in canvas.Children)
-            {
-                Console.WriteLine(i + " = " + ( point + uis.Count));
-                if (i == point + uis.Count) break;
-                if (!uis[k].TypeUI.Equals(TypeUI.BUTTON))
-                {
-                    Console.WriteLine("test 0");
-                    i++;
-                    k++;
-                    continue;
-                }
-                Console.WriteLine("test 1");
-                if (uis[k].NameTexture == null) texture = GetBitmapImageFromResourse("noneTexture.png");
-                else texture = GetBitmapImageFromAssets(uis[k].NameTexture);
-                ((Image)child).Width = uis[k].Size;
-                ((Image)child).Height = uis[k].Size;
-                Canvas.SetBottom((Image)child, 335 - uis[k].Position.Y - ((Image)child).Height);
-                Canvas.SetRight((Image)child, 728 - uis[k].Position.X - ((Image)child).Width);
-                Console.WriteLine("test 2");
-                k++;
-                i++;
-            }*/
         }
         
         
@@ -2656,30 +2319,10 @@ namespace test_Winforms
         {
             TextBlock textBlock = new TextBlock();
             textBlock.Text = "ui " + GetScene().Uis.Count;
-            //textBlock.PreviewMouseDown += clickEvent;
 
             listUI.Items.Add(textBlock);
             GetScene().Uis.Add(new UI(name, typeUI));
         }
-
-        /*private void visibilityButtonUIEditor(Visibility visibility)
-        {
-            labelXUI.Visibility = visibility;
-            labelYUI.Visibility = visibility;
-            yUI.Visibility = visibility;
-            xUI.Visibility = visibility;
-            imageUI.Visibility = visibility;
-            sizeUIX.Visibility = visibility;
-            sizeUIY.Visibility = visibility;
-            labelSizeUI.Visibility = visibility;
-            addTextureUIButton.Visibility = visibility;
-        }
-
-        private void visibilitySoundUIEditor(Visibility visibility)
-        {
-            buttonFindSoundFile.Visibility = visibility;
-        }*/
-        
 
         private void SetUIEditor(TypeUI typeUI)
         {
@@ -2722,7 +2365,6 @@ namespace test_Winforms
 
             openScriptButton.Visibility = Visibility.Hidden;
             layerScript.Visibility = Visibility.Hidden;
-            //checkBoxGlobalScript_Copy.Visibility = Visibility.Hidden;
 
             if(typeUI.Equals(TypeUI.NONE))
             {
@@ -2805,51 +2447,7 @@ namespace test_Winforms
                 openScriptButton.Visibility = Visibility.Visible;
                 layerScript.Visibility = Visibility.Visible;
                 labelLayerScript.Visibility = Visibility.Visible;
-                //checkBoxGlobalScript_Copy.Visibility = Visibility.Visible;
             }
-
-            /*Visibility buttonUI = typeUI.Equals(TypeUI.BUTTON) ? Visibility.Visible : Visibility.Hidden;
-            labelXUI.Visibility = buttonUI;
-            labelYUI.Visibility = buttonUI;
-            yUI.Visibility = buttonUI;
-            xUI.Visibility = buttonUI;
-            imageUI.Visibility = buttonUI;
-            sizeUIX.Visibility = buttonUI;
-            sizeUIY.Visibility = buttonUI;
-            labelSizeUI.Visibility = buttonUI;
-            addTextureUIButton.Visibility = buttonUI;
-
-            if (!typeUI.Equals(TypeUI.BUTTON)) {
-                //Visibility imageUI_visible = typeUI.Equals(TypeUI.IMAGE) ? Visibility.Visible : Visibility.Hidden;
-                labelXUI.Visibility = Visibility.Visible;
-                labelYUI.Visibility = Visibility.Visible;
-                yUI.Visibility = Visibility.Visible;
-                xUI.Visibility = Visibility.Visible;
-                imageUI.Visibility = Visibility.Visible;
-                sizeUIX.Visibility = Visibility.Visible;
-                sizeUIY.Visibility = Visibility.Visible;
-                labelSizeUI.Visibility = Visibility.Visible;
-                addTextureUIButton.Visibility = Visibility.Visible;
-            }
-
-            Visibility soundUI = typeUI.Equals(TypeUI.SOUND) ? Visibility.Visible : Visibility.Hidden;
-            buttonFindSoundFile.Visibility = soundUI;
-
-            if (typeUI.Equals(TypeUI.BUTTON))
-            {
-                textUI.Visibility = Visibility.Hidden;
-                labelTextUI.Visibility = Visibility.Hidden;
-                return;
-            }
-            Visibility textUI_Visible = typeUI.Equals(TypeUI.TEXT) ? Visibility.Visible : Visibility.Hidden;
-            labelXUI.Visibility = textUI_Visible;
-            labelYUI.Visibility = textUI_Visible;
-            yUI.Visibility = textUI_Visible;
-            xUI.Visibility = textUI_Visible;
-            sizeUIX.Visibility = textUI_Visible;
-            labelSizeUI.Visibility = textUI_Visible;
-            labelTextUI.Visibility = textUI_Visible;
-            textUI.Visibility = textUI_Visible;*/
         }
 
         private void SetVisibleEditor(Visibility visibility, VisibilityEditor visibilityEditor)
@@ -2872,7 +2470,6 @@ namespace test_Winforms
                     sizeUIY.Visibility = visibility;
                     buttonCloneUI.Visibility = visibility;
                     labelTextUI.Visibility = visibility;
-                    //checkBoxGlobalScript_Copy.Visibility = visibility;
                     textUI.Visibility = visibility;
                     countUI.Visibility = visibility;
                     labelCountParticleUI.Visibility = visibility;
@@ -2970,10 +2567,6 @@ namespace test_Winforms
                 file.Delete();
             }
 
-            //DirectoryInfo d = new DirectoryInfo("assets");
-
-            
-
             // export all files
             foreach (string _file in Directory.EnumerateFiles("assets", "*", SearchOption.AllDirectories))
             {
@@ -3034,7 +2627,6 @@ namespace test_Winforms
                             }
                             if (deleteTab && (char)(byte)data == ' ') continue;
                             textRead += (char)(byte)data;
-                            //textRead += $"+ '{(char)(byte)data}' ";
                         }
                         fsRead.Close();
                         textRead += "\';";
@@ -3070,15 +2662,6 @@ namespace test_Winforms
                 }
             }
         }
-        /*private void Element_PreviewMouseDown(object sender, MouseEventArgs e)
-        {
-            imageObject.CaptureMouse();
-        }
-
-        private void Element_PreviewMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            imageObject.ReleaseMouseCapture();
-        }*/
 
         private void SetImageUI(UI ui)
         {
@@ -3099,7 +2682,6 @@ namespace test_Winforms
             {
                 if (scene.Name.Equals(nameScene))
                 {
-                    //Console.WriteLine($"i founded scene {scene.Name}");
                     return scene;
                 }
             }
@@ -3158,7 +2740,6 @@ namespace test_Winforms
             else if (text.EndsWith(".xml")) nameFile = text.Replace(".xml", "");
             else if (text.EndsWith(".tsx")) nameFile = text.Replace(".tsx", "");
             else if (text.EndsWith(".tmx")) nameFile = text.Replace(".tmx", "");
-            //else if (text.EndsWith(".cs")) nameFile = text.Replace(".cs", "");
             else if (text.EndsWith(".txt")) nameFile = text.Replace(".txt", "");
             else if (text.EndsWith(".lua")) nameFile = text.Replace(".lua", "");
             else if (text.EndsWith(".bubla")) nameFile = text.Replace(".bubla", "");
